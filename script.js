@@ -939,15 +939,30 @@ function initScrollRevealAndDots() {
   const sections = document.querySelectorAll("section");
   const dots = document.querySelectorAll(".dot-item");
 
+  if (!("IntersectionObserver" in window)) {
+    reveals.forEach(el => el.classList.add("revealed"));
+    return;
+  }
+
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add("revealed");
       }
     });
-  }, { threshold: 0.15 });
+  }, { threshold: 0.1 });
 
   reveals.forEach(el => revealObserver.observe(el));
+
+  // Safety backup to reveal initial sections above the fold
+  setTimeout(() => {
+    reveals.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight) {
+        el.classList.add("revealed");
+      }
+    });
+  }, 400);
 
   const sectionObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -958,7 +973,7 @@ function initScrollRevealAndDots() {
         });
       }
     });
-  }, { threshold: 0.4 });
+  }, { threshold: 0.3 });
 
   sections.forEach(sec => sectionObserver.observe(sec));
 

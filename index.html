@@ -56,6 +56,18 @@
     </div>
     <div class="loader-text">Wrapping up something special…</div>
   </div>
+  <script>
+    (function() {
+      setTimeout(function() {
+        var loader = document.getElementById("loader-section");
+        if (loader) {
+          loader.classList.add("hidden");
+          loader.style.display = "none";
+          loader.style.pointerEvents = "none";
+        }
+      }, 1200);
+    })();
+  </script>
 
   <!-- ==========================================================================
        SECTION 1 — The Proposal
