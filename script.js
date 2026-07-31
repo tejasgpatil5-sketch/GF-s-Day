@@ -376,6 +376,9 @@ function initDodgingNoBtn() {
   });
 
   window.addEventListener("mousemove", (e) => {
+    const cardRect = card.getBoundingClientRect();
+    if (cardRect.bottom < 0 || cardRect.top > window.innerHeight) return;
+
     const btnRect = noBtn.getBoundingClientRect();
     const btnCenterX = btnRect.left + btnRect.width / 2;
     const btnCenterY = btnRect.top + btnRect.height / 2;
