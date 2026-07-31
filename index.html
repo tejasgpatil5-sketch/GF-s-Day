@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Girlfriend's Day ❤️</title>
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Happy Girlfriend's Day ❤️" />
+  <meta property="og:description" content="A romantic, interactive surprise created with love." />
+  <meta property="og:type" content="website" />
+
+  <!-- Heart Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e63956'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Great+Vibes&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+
+  <!-- Ambient Particle Canvas & Overlays -->
+  <canvas id="ambient-canvas"></canvas>
+  <div class="noise-overlay"></div>
+  <div id="cursor-trail-container"></div>
+
+  <!-- Top Floating Controls -->
+  <div class="top-controls">
+    <button id="day-night-toggle" class="icon-btn" aria-label="Toggle Day or Night theme">☀️</button>
+    <button id="mute-toggle" class="icon-btn" aria-label="Toggle Sound Mute">🔊</button>
+  </div>
+
+  <!-- Section Progress Dots (Desktop Navigation) -->
+  <nav id="progress-dots" aria-label="Section Navigation">
+    <div class="dot-item active" data-target="proposal-section"><span class="dot-tooltip">Proposal</span></div>
+    <div class="dot-item" data-target="envelope-section"><span class="dot-tooltip">Envelope</span></div>
+    <div class="dot-item" data-target="music-section"><span class="dot-tooltip">Music Player</span></div>
+    <div class="dot-item" data-target="reasons-section"><span class="dot-tooltip">Reasons I Love You</span></div>
+    <div class="dot-item" data-target="memories-section"><span class="dot-tooltip">Our Memories</span></div>
+    <div class="dot-item" data-target="letter-section"><span class="dot-tooltip">Love Letter</span></div>
+    <div class="dot-item" data-target="timeline-section"><span class="dot-tooltip">Our Journey</span></div>
+    <div class="dot-item" data-target="forever-section"><span class="dot-tooltip">Forever</span></div>
+  </nav>
+
+  <!-- ==========================================================================
+       SECTION 0 — Loading Screen
+       ========================================================================== -->
+  <div id="loader-section" role="dialog" aria-label="Loading Surprise">
+    <div class="heart-pulse-icon">❤️</div>
+    <div class="loader-bar-bg">
+      <div class="loader-bar-fill"></div>
+    </div>
+    <div class="loader-text">Wrapping up something special…</div>
+  </div>
+
+  <!-- ==========================================================================
+       SECTION 1 — The Proposal
+       ========================================================================== -->
+  <section id="proposal-section">
+    <div class="glass-card proposal-card scroll-reveal">
+      <h1>Hey <span class="her-name">Princess</span> ❤️</h1>
+      <p>I have something very important to ask you...</p>
+      
+      <div class="button-group">
+        <button id="yes-btn" class="btn-primary">❤️ YES</button>
+        <button id="no-btn" class="btn-secondary">💔 NO</button>
+        <div id="no-btn-tooltip" class="no-btn-tooltip">Are you sure? 🥺</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SECTION 2 — The Envelope
+       ========================================================================== -->
+  <section id="envelope-section">
+    <div class="container">
+      <h2 class="section-title scroll-reveal">A Letter For You 💌</h2>
+      <p class="section-subtitle scroll-reveal">Tap the wax seal to open...</p>
+
+      <div class="envelope-wrapper scroll-reveal" role="button" aria-label="Open Love Envelope">
+        <div class="envelope">
+          <div class="envelope-flap"></div>
+          <div id="wax-seal" class="wax-seal">❤️</div>
+          <div class="envelope-pocket"></div>
+          <div class="envelope-letter">
+            <p style="font-family: var(--font-heading); font-size: 1.8rem; color: var(--accent-rose);">Open Me ❤️</p>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px;">Happy Girlfriend's Day</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SECTION 3 — "What I Feel About You" (Vinyl Record Music Player)
+       ========================================================================== -->
+  <section id="music-section">
+    <div class="container">
+      <h2 class="section-title scroll-reveal">What I Feel About You ❤️</h2>
+      <p class="section-subtitle scroll-reveal">Every melody carries a piece of my heart...</p>
+
+      <div class="glass-card music-player-container scroll-reveal">
+        <!-- Turntable Display -->
+        <div class="turntable-box">
+          <div class="vinyl-wrapper">
+            <div id="glow-ring" class="glow-ring"></div>
+            <div class="vinyl-record">
+              <div class="vinyl-center-art"></div>
+            </div>
+            <div class="tonearm">
+              <div class="tonearm-head"></div>
+              <div class="tonearm-arm"></div>
+              <div class="tonearm-needle"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Player Details & Controls -->
+        <div class="player-details">
+          <div class="track-info">
+            <h3 class="track-title">Tere Siwa Main Jaaun Kahan</h3>
+            <p class="track-artist">Arijit Singh</p>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="progress-container">
+            <div class="progress-bar-bg" role="progressbar" aria-label="Track Progress">
+              <div class="progress-bar-fill"></div>
+            </div>
+            <div class="time-stamps">
+              <span id="time-elapsed">0:00</span>
+              <span id="track-duration">3:30</span>
+            </div>
+          </div>
+
+          <!-- Controls -->
+          <div class="player-controls">
+            <button id="prev-btn" class="ctrl-btn" aria-label="Previous Track">⏮️</button>
+            <button id="play-pause-btn" class="ctrl-btn play-main" aria-label="Play or Pause">▶️</button>
+            <button id="next-btn" class="ctrl-btn" aria-label="Next Track">⏭️</button>
+            
+            <div class="volume-container">
+              <span>🔊</span>
+              <input type="range" class="volume-slider" min="0" max="1" step="0.05" value="0.8" aria-label="Volume Slider" />
+            </div>
+          </div>
+
+          <!-- Visible Responsive Official YouTube Player for Universal Playback (iOS/Android/Desktop) -->
+          <div class="yt-player-box" style="margin: 15px 0; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.18); background: #000; position: relative; aspect-ratio: 16/9; width: 100%; max-width: 100%;">
+            <div id="yt-player-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></div>
+          </div>
+
+          <!-- Audio Status & YouTube Official Stream Info -->
+          <div class="audio-controls-extra">
+            <div id="audio-status-msg" class="audio-status-msg" role="status" aria-live="polite"></div>
+          </div>
+
+          <!-- Dynamic Romantic Note Card -->
+          <div class="romantic-note-box">
+            "You are my peace. No matter where life takes me, my heart always finds its way back to you."
+          </div>
+
+          <!-- Playlist Toggle Drawer -->
+          <div class="playlist-toggle">
+            <span>🎵 Romantic Playlist</span>
+            <span>▼</span>
+          </div>
+          <div class="playlist-items"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SECTION 4 — "Why I Love You" (Flip Cards)
+       ========================================================================== -->
+  <section id="reasons-section">
+    <div class="container">
+      <h2 class="section-title scroll-reveal">A Few Reasons, Out of Infinite ❤️</h2>
+      <p class="section-subtitle scroll-reveal">Hover or tap cards to reveal why you mean the world to me...</p>
+
+      <div class="reasons-grid scroll-reveal">
+        <!-- Card 1 -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="icon">🌟</div>
+              <h3>Your Beautiful Smile</h3>
+            </div>
+            <div class="flip-card-back">
+              It instantly lights up my darkest days and makes every worry melt away in a second.
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="icon">🎶</div>
+              <h3>Your Sweet Laugh</h3>
+            </div>
+            <div class="flip-card-back">
+              The sweetest melody in the universe that I could happily listen to for eternity.
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="icon">💖</div>
+              <h3>Your Kind Heart</h3>
+            </div>
+            <div class="flip-card-back">
+              The effortless grace, empathy, and genuine compassion you show to everyone around you.
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="icon">🕊️</div>
+              <h3>Your Gentle Touch</h3>
+            </div>
+            <div class="flip-card-back">
+              How a single warm hug from you washes away all the chaos of the outside world.
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="icon">✨</div>
+              <h3>Your Sparkling Eyes</h3>
+            </div>
+            <div class="flip-card-back">
+              I see my entire future, my happiest dreams, and my home reflected right in your eyes.
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="icon">🤝</div>
+              <h3>How You Support Me</h3>
+            </div>
+            <div class="flip-card-back">
+              You are my biggest cheerleader, believing in me even when I doubt myself.
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 7 -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="icon">🏡</div>
+              <h3>Being My Safe Haven</h3>
+            </div>
+            <div class="flip-card-back">
+              With you, I never have to hide or pretend. You are my peace, my safe space, and my comfort.
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 8 -->
+        <div class="flip-card">
+          <div class="flip-card-inner">
+            <div class="flip-card-front">
+              <div class="icon">🌺</div>
+              <h3>Just Being You</h3>
+            </div>
+            <div class="flip-card-back">
+              Everything about you is uniquely wonderful. I cherish every single second spent with you.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SECTION 5 — "Our Memories" (Polaroids & Counter)
+       ========================================================================== -->
+  <section id="memories-section">
+    <div class="container">
+      <h2 class="section-title scroll-reveal">Little Moments I Never Want to Forget ❤️</h2>
+      <p class="section-subtitle scroll-reveal">Counting every precious moment spent together...</p>
+
+      <!-- Days Together Live Counter -->
+      <div class="days-counter-card scroll-reveal">
+        <h3>Days Together & Counting ❤️</h3>
+        <p class="counter-start-date-label">Since 26th January 2025 • 1:50 PM ❤️</p>
+        <div class="counter-digits-grid">
+          <div class="digit-box">
+            <span id="days-num" class="digit-num">0</span>
+            <span class="digit-label">Days</span>
+          </div>
+          <div class="digit-box">
+            <span id="hours-num" class="digit-num">00</span>
+            <span class="digit-label">Hours</span>
+          </div>
+          <div class="digit-box">
+            <span id="mins-num" class="digit-num">00</span>
+            <span class="digit-label">Minutes</span>
+          </div>
+          <div class="digit-box">
+            <span id="secs-num" class="digit-num">00</span>
+            <span class="digit-label">Seconds</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Polaroid Grid (Add real <img src="..."> in frames below if desired) -->
+      <div class="polaroid-grid scroll-reveal">
+        <!-- Photo 1 -->
+        <div class="polaroid-item">
+          <div class="polaroid-tape"></div>
+          <div class="polaroid-photo-frame">
+            <!-- TO ADD YOUR OWN PHOTO: replace the contents of this frame with <img src="/path/to/your/photo1.jpg" alt="Memory 1" /> -->
+            <div class="polaroid-placeholder-icon">📸</div>
+            <div class="polaroid-placeholder-text"><img src="C:\Users\admin\Downloads\happy-girlfriend's-day\images\hands.jpeg"></div>
+          </div>
+          <div class="polaroid-caption">Our First Date ❤️</div>
+        </div>
+
+        <!-- Photo 2 -->
+        <div class="polaroid-item">
+          <div class="polaroid-tape"></div>
+          <div class="polaroid-photo-frame">
+            <!-- TO ADD YOUR OWN PHOTO: replace with <img src="/path/to/your/photo2.jpg" alt="Memory 2" /> -->
+            <div class="polaroid-placeholder-icon">🌸</div>
+            <div class="polaroid-placeholder-text"><img src="C:\Users\admin\Downloads\happy-girlfriend's-day\images\icecream.jpeg"></div>
+          </div>
+          <div class="polaroid-caption">icecream at monica ☕</div>
+        </div>
+
+        <!-- Photo 3 -->
+        <div class="polaroid-item">
+          <div class="polaroid-tape"></div>
+          <div class="polaroid-photo-frame">
+            <!-- TO ADD YOUR OWN PHOTO: replace with <img src="/path/to/your/photo3.jpg" alt="Memory 3" /> -->
+            <div class="polaroid-placeholder-icon">✨</div>
+            <div class="polaroid-placeholder-text"><img src="C:\Users\admin\Downloads\happy-girlfriend's-day\images\sunset.jpeg"></div>
+          </div>
+          <div class="polaroid-caption">Unforgettable Sunset 🌅</div>
+        </div>
+
+        <!-- Photo 4 -->
+        <div class="polaroid-item">
+          <div class="polaroid-tape"></div>
+          <div class="polaroid-photo-frame">
+            <!-- TO ADD YOUR OWN PHOTO: replace with <img src="/path/to/your/photo4.jpg" alt="Memory 4" /> -->
+            <div class="polaroid-placeholder-icon">🥰</div>
+            <div class="polaroid-placeholder-text"><img src="C:\Users\admin\Downloads\happy-girlfriend's-day\images\fav.jpeg"></div>
+          </div>
+          <div class="polaroid-caption">My Favorite Smile 💖</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SECTION 6 — The Love Letter
+       ========================================================================== -->
+  <section id="letter-section">
+    <div class="container">
+      <h2 class="section-title scroll-reveal">To My Beautiful Girl ❤️</h2>
+      
+      <div class="letter-card scroll-reveal">
+        <div class="letter-header">Dearest <span class="her-name">Princess</span>,</div>
+        <div class="letter-body">
+          My Love,
+
+I don't know where to begin, so let me begin at the start — 11th grade, computer class. I remember noticing you before I really knew you, thinking to myself that you were cute, having no idea what was coming. We stayed just casual friends for the rest of that year and into the next, but I noticed you. Every single day, I noticed you.
+
+Then in 12th, you started sitting in front of me. I used to just look at your hair and think about how much I liked it — such a small thing, but it stayed with me. And then one day, out of nowhere, you asked me for chaar chitthi. I said yes without thinking twice, and I had no idea that one small moment would change everything. From that day on, something shifted in me. I started thinking about you more and more, until I couldn't stop. I began sitting behind you even at lunch, not talking, not doing anything — just quietly taking in how beautiful you were.
+
+Then came Traditional Day. I saw you in that saree and I was completely stunned. I don't think I've ever forgotten that feeling. And then the day with Hetvi and that fight happened, and somehow that became the turning point for us. After that, you — who were still just my friend then — and I started talking more and more, six, seven hours a day, like it was the easiest thing in the world.
+
+I still think about you waiting for me outside Aakash's for pani puri, and how I made you wait fifteen, twenty minutes because my maths sir wouldn't let me go. I still feel a little guilty about that.
+
+And then came 6th January 2025, 1:50 in the afternoon. You told me how you felt, and I acted like I didn't understand — I don't even know why I did that. But that same day, we both confessed to each other, and we talked for almost ten hours straight, neither of us wanting to hang up.
+
+Going to the mela with you on 23rd January was one of the happiest, most overwhelming days I have ever lived. I still don't have the words for how full my heart felt that day. And two days later, on my birthday, you gave me that Naruto keychain. I have never lost it, and I never will. Out of everything anyone has ever given me, it is the most precious thing I own — not because of what it is, but because of who gave it to me.
+
+So on this Girlfriend's Day, I just want to say it plainly: I love you. I care about you more than I know how to put into words. All I want, every single day, is for you to be happy. I am not going anywhere — not now, not ever, no matter what life throws at us. I will keep listening to you, laughing with you, and cherishing every ordinary day we get together, because you have made every one of them extraordinary.
+
+And yes, I'm still going to irritate you sometimes. I can't help it — you're simply too cute when you're angry at me.
+
+Happy Girlfriend's Day, my love.
+
+❤️
+        </div>
+        
+        <div class="letter-signature">
+          Forever Yours,<br />
+          ❤️ <span class="your-name">Your Prince</span>
+        </div>
+
+        <!-- Hidden Easter Egg -->
+        <div id="secret-easter-egg-heart" class="secret-easter-egg-heart" title="Click for a hidden message">🤍</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SECTION 7 — Countdown / Relationship Timeline
+       ========================================================================== -->
+  <section id="timeline-section">
+    <div class="container">
+      <h2 class="section-title scroll-reveal">Our Journey Together ❤️</h2>
+      <p class="section-subtitle scroll-reveal">Milestones along the path of our love story...</p>
+
+      <div class="timeline-container scroll-reveal">
+        <!-- Item 1 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">26th January 2025 • 1:50 PM</div>
+            <h3 class="timeline-title">Our Relationship Began 💫</h3>
+            <p class="timeline-desc">The moment our story officially began and my world changed forever.</p>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">First Spark</div>
+            <h3 class="timeline-title">Our First Date ☕</h3>
+            <p class="timeline-desc">Butterflies in my stomach, endless conversations, and a smile I couldn't forget.</p>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">The Realization</div>
+            <h3 class="timeline-title">Realizing You Were 'The One' 💖</h3>
+            <p class="timeline-desc">When I realized that every happy future I imagined had you in it.</p>
+          </div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">Today & Always</div>
+            <h3 class="timeline-title">Happy Girlfriend's Day 💐</h3>
+            <p class="timeline-desc">Celebrating you today, tomorrow, and every day for the rest of my life.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       FINAL SECTION — Forever & Keepsake Actions
+       ========================================================================== -->
+  <section id="forever-section">
+    <div class="container scroll-reveal">
+      <div class="beating-heart-giant">❤️</div>
+      <h2 class="forever-title">I Love You Forever ❤️</h2>
+      <p style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 40px;">
+        Thank you for being the most incredible person in my life.
+      </p>
+
+      <div class="action-btn-row">
+        <button id="replay-btn" class="btn-primary">Replay the Surprise ❤️</button>
+        <button id="save-keepsake-btn" class="btn-gold">Save This Moment (Download Keepsake) 📜</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Easter Egg Secret Popup Modal -->
+  <div id="easter-egg-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-label="Secret Easter Egg Message">
+    <div class="modal-card">
+      <h3>You Found My Secret! 💖</h3>
+      <p>Out of everyone in the whole world, you are my absolute favorite person in the entire universe. I love you more than words could ever explain! ✨</p>
+      <button id="modal-close-btn" class="btn-primary">Close with Love ❤️</button>
+    </div>
+  </div>
+
+  <!-- Offscreen Canvas for Keepsake PNG Generation -->
+  <canvas id="keepsake-canvas" style="display: none;"></canvas>
+
+  <!-- Main JavaScript File -->
+  <script src="./script.js"></script>
+</body>
+</html>

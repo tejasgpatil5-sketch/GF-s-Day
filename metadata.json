@@ -1,0 +1,6 @@
+{
+  "name": "Happy Girlfriend's Day",
+  "description": "A romantic, interactive Happy Girlfriend's Day surprise web app",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
