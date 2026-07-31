@@ -104,23 +104,37 @@ const NO_BTN_MESSAGES = [
 /* --------------------------------------------------------------------------
    4. DOM INITIALIZATION & DYNAMIC CONFIG INJECTION
    -------------------------------------------------------------------------- */
-document.addEventListener("DOMContentLoaded", () => {
-  injectConfigText();
-  initLoader();
-  initAmbientCanvas();
-  initCursorTrail();
-  initDodgingNoBtn();
-  initProposalYesBtn();
-  initEnvelopes();
-  initAudioPlayer();
-  initLiveCounter();
-  initFlipCards();
-  initScrollRevealAndDots();
-  initDayNightToggle();
-  initMuteToggle();
-  initKeepsakeGenerator();
-  initEasterEgg();
-});
+function initApp() {
+  const safeRun = (fn, name) => {
+    try {
+      fn();
+    } catch (e) {
+      console.error(`Error initializing ${name}:`, e);
+    }
+  };
+
+  safeRun(injectConfigText, "Config");
+  safeRun(initLoader, "Loader");
+  safeRun(initAmbientCanvas, "AmbientCanvas");
+  safeRun(initCursorTrail, "CursorTrail");
+  safeRun(initDodgingNoBtn, "DodgingNoBtn");
+  safeRun(initProposalYesBtn, "ProposalYesBtn");
+  safeRun(initEnvelopes, "Envelopes");
+  safeRun(initAudioPlayer, "AudioPlayer");
+  safeRun(initLiveCounter, "LiveCounter");
+  safeRun(initFlipCards, "FlipCards");
+  safeRun(initScrollRevealAndDots, "ScrollRevealAndDots");
+  safeRun(initDayNightToggle, "DayNightToggle");
+  safeRun(initMuteToggle, "MuteToggle");
+  safeRun(initKeepsakeGenerator, "KeepsakeGenerator");
+  safeRun(initEasterEgg, "EasterEgg");
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initApp);
+} else {
+  initApp();
+}
 
 // Substitutes CONFIG.herName and CONFIG.yourName across all marked HTML elements
 function injectConfigText() {
@@ -140,6 +154,8 @@ function initLoader() {
   const loaderBarFill = document.querySelector(".loader-bar-fill");
   const loaderText = document.querySelector(".loader-text");
 
+  if (!loaderSection) return;
+
   const messages = [
     "Wrapping up something special…",
     "Gathering romantic melodies…",
@@ -150,6 +166,17 @@ function initLoader() {
   let progress = 0;
   let msgIdx = 0;
 
+  const hideLoader = () => {
+    loaderSection.classList.add("hidden");
+    setTimeout(() => {
+      loaderSection.style.display = "none";
+      loaderSection.style.pointerEvents = "none";
+    }, 500);
+  };
+
+  // Hard safety fallback: Ensure loader is hidden even if interval stalls
+  const safetyTimeout = setTimeout(hideLoader, 2200);
+
   const interval = setInterval(() => {
     progress += 25;
     if (loaderBarFill) loaderBarFill.style.width = `${progress}%`;
@@ -158,11 +185,10 @@ function initLoader() {
 
     if (progress >= 100) {
       clearInterval(interval);
-      setTimeout(() => {
-        loaderSection.classList.add("hidden");
-      }, 500);
+      clearTimeout(safetyTimeout);
+      setTimeout(hideLoader, 300);
     }
-  }, 400);
+  }, 350);
 }
 
 /* --------------------------------------------------------------------------
@@ -514,11 +540,19 @@ function initAudioPlayer() {
     const tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
     const firstScriptTag = document.getElementsByTagName("script")[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    if (firstScriptTag && firstScriptTag.parentNode) {
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    } else {
+      (document.head || document.body).appendChild(tag);
+    }
   }
 
   // 5. Global callback when YouTube API is ready
   window.onYouTubeIframeAPIReady = () => {
+    const playerOrigin = (window.location.origin && window.location.origin !== "null") ? window.location.origin : undefined;
+    const container = document.getElementById("yt-player-container");
+    if (!container) return;
+
     ytPlayer = new YT.Player("yt-player-container", {
       height: "200",
       width: "200",
@@ -530,7 +564,7 @@ function initAudioPlayer() {
         modestbranding: 1,
         rel: 0,
         playsinline: 1,
-        origin: window.location.origin
+        ...(playerOrigin ? { origin: playerOrigin } : {})
       },
       events: {
         onReady: onYTPlayerReady,
